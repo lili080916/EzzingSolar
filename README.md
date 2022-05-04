@@ -1,64 +1,228 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+### RESPUESTAS AL FORMULARIO PRE-ENTREVISTA
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Para un mayor entendimiento de las respuestas a las preguntas dadas en el documento, he desarrollado la API correspondiente, donde cada una de estas respuestas estan implementadas.
 
-## About Laravel
+- Desarrollado con Laravel 9
+- haciendo uso de Request y Rules para validación
+- Passport para autenticación con token
+- Middleware para permisos de acceso como Cors
+- Resource para la respuestas de datos Json
+- Eloquent para interacción con la capa de datos(como se solicita en el formulario)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### PASOS PARA EL DESPLIEGUE DE LA API
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Necesita requerimientos mínimos:
+```requiere
+PHP 8
+Composer 2.*
+```
 
-## Learning Laravel
+Clonamos la api del Github:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+`git clone https://github.com/lili080916/EzzingSolar.git`
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Comandos para iniciar el proyecto:
+```command
+composer install
+php artisan migrate
+php artisan db:seed
+php artisan passport:install
+```
 
-## Laravel Sponsors
+En la raíz del proyecto, la carpeta **client http** puede importarse una collection de **Postsman** para interactuar con los endpoints desarrollados. ***IMPORTANTE sustituir el secret  en el endpoint OAUTH TOKEN por el que se genere cuando se corra el comando referente al client_id = 2***
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+`php artisan passport:install`
 
-### Premium Partners
+### RESPUESTAS
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+####Tablas
 
-## Contributing
+| Users                   |
+| ------------- | ------------------------------ |
+| `ID`      | Integer       |
+| `name`   | String     |
+| `surname`      | String       |
+| `birthday`   | Date     |
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
 
-## Code of Conduct
+| Comments                   |
+| ------------- | ------------------------------ |
+| `ID`      | Integer       |
+| `user_id`   | Integer     |
+| `test`      | String       |
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+####Modelos
 
-## Security Vulnerabilities
+```models
+App\Models\User
+public function comments(): HasMany
+{
+    return $this->hasMany(‘App\Models\Comment’);
+}
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+App\Models\Comment
+public function user(): BelongsTo
+{
+    return $this->BelongsTo(‘App\Models\User);
+}
+```
 
-## License
+####Pregunta 1
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Tienes que crear una petición POST que a partir de unos datos guarde un usuario.
+La ruta de la petición es /api/save-user.
+Los argumentos de la petición son: name, surname y birthday.
+En el controlador asociado a la ruta, tendrás 3 principales bloques de lógica:
+
+1. Validación (validar que el usuario es mayor de edad)
+2. Algoritmia (dependiendo del rango de edad del usuario haremos cierta lógica
+con los datos)
+3. Conexión a base de datos (insertar el usuario en la tabla usando eloquent)
+
+¿Cómo organizarías estos tres bloques de código a nivel de arquitectura? En otras
+palabras, en qué archivo o clase incluirías cada pieza de lógica
+
+> Las validaciones están en los archivos de Request que se crean con el comando:
+`php artisan make:request StoreUserRequest`
+y en el llevamos la validación de los datos de entrada. Mirar desarrollo en: raiz/app/Http/Requests/StoreUserRequest.php
+
+> Las validaciones personalizadas o Rules, como se denominan en Laravel, se crean con el comando:
+`php artisan make:rule Adult`
+y en él llevamos la validación personalizada para si el usuario es mayor de edad. Mirar desarrollo en: raiz/app/Rules/Adult.php
+
+> Entonces la arquitecturas o archivos utilizados son:
+**UserController**: Lógica de la función
+**Models**: Es el objeto para interactuar con la capa de datos y se hidrata con la estructura e información de la BD, manejo del objeto, los atributos, relaciones, entre otros.
+**StoreUserRequest**: Request para la validación en la entrada de los datos
+**Adult.php**: Validación personalizada para tratamiento de los datos de fechas y toma de la edad del usuario.
+
+####Pregunta 2
+
+Tienes las siguientes rutas en tu archivo api.php de laravel.
+
+1. POST /api/users/
+2. POST /api/users/{id}/edit
+3. GET /api/users/{id}
+4. GET /api/users
+
+Necesitas que todas las rutas implementen un middleware de autenticación (las
+peticiones futuras que crees en el proyecto también deberán implementarlo). Dados
+estos requisitos, ¿Qué forma conoces para conseguir esto mediante laravel?.
+
+> Se crearon dos **Middleware**: uno para el **Cors** para que pueda ser accesible la api desde cualquier servidor externo y el segundo **auth:api** que permite a las rutas dentro de este grupo verificar que tenga un **access_token** con los permisos requeridos para acceder a los controlladores correspondientes. Estos **Middleware** deben ser insertados en el **Kernel** para que sean ejecutados.
+`php artisan make:middleware Cors`
+
+```middleware1
+$response = $next($request);
+$response->headers->set('Access-Control-Allow-Origin', '*');
+$response->headers->set('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
+$response->headers->set('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-XSRF-TOKEN');
+
+return $response;
+```
+
+> `php artisan make:middleware AllowMiddleware`
+
+```middleware2
+if (! $request->expectsJson()) {
+   return route('err');
+};
+```
+> Rutas: Si no tienes accesos porque las credeciales son incorrectas retorna un status 401 con acceso denegado
+
+```routes
+Route::get('err', function (Request $request) {
+    return response(['data' => 'Access denied'], 401);
+})->name('err');
+
+Route::group(['middleware' => ['auth:api']], function () {
+    //  user url
+    Route::get('users-with-comments', 'UserController@getUsersWithComments');
+    Route::group(['prefix' => 'users'], function () {
+        Route::post('', 'UserController@saveUser');
+        Route::get('', 'UserController@getUsers');
+        Route::put('{id}','UserController@editUser');
+        Route::get('{id}','UserController@getUserById');
+    });
+});
+```
+
+Todas las rutas que se deseen asegurar que haya un **access_token** con credenciales correctas deben estar dentro de grupo que tiene este **Middleware auth:api**
+
+####Pregunta 3
+
+Se te pide hacer una nueva petición para devolver los usuarios con sus
+comentarios. Deberás devolver un json con los usuarios, cada usuario con sus
+comentarios.
+
+```pregunta3
+Route::get('api/users-with-comments', 'UserController@getUsersWithComments');
+
+class UserController
+function getUsersWithComments()
+{
+    $usersWithComments = [];
+    // Desarrollar lógica
+    return json_response($usersWithComments);
+}
+```
+
+> Recarcar que se esta devolviendo la información en formato **JSON** a traves de los **Resource de laravel** comando:
+`php artisan make:resource UserResource`
+`php artisan make:resource UserCollection`
+Para la implementación de esta funcionaliad que se desea nos apoyamos en las relaciones que estan implementadas en los **models** implementación:
+
+```respuesta3
+public function getUsersWithComments(Request $request)
+{
+    $users = User::with(['comments'])->paginate(5);
+
+    return UserCollection::make($users);
+}
+```
+> Así de sencillo ILoveLaravel jeje: **Eloquent** permite atraves de lo modelos y las relaciones y esto implementado con los **Resource** facilitan mucho la implementación y también la eficiencia para obtener el producto final. Los invitos a ver la implementación realizada.
+
+####Pregunta 4
+
+Se te pide modificar el endpoint existente /api/users para que devuelva una nueva
+propiedad dentro de cada usuario “fullname”, resultante de la concatenación de las
+columnas de tabla “name” y “surname”. Esto sin generar una nueva columna en la
+tabla. ¿Cómo lo implementarías?.
+
+> Hay varias formas de ejecutar esta funcionalidad, por los mismos **Resource** es una pero implementé la vía que creo que es más eficiente y sencilla. En el modelo se crea una **$appends['fullname']** y este hace referencia a **getFullNameAttribute** el cual retorna la concatenación del **name** con **surname** esto le hace un appends con el dato  **fullname** al modelo **User**  y todo esto se termina devolviendo en el **UserResource** código:
+
+```respuesta4
+User Models
+protected $appends = ['fullname'];
+
+public function getFullNameAttribute() : string
+{
+    return $this->name . ' ' . $this->surname;
+}
+```
+
+####Pregunta 5
+
+¿Qué experiencia tienes en los siguientes aspectos de laravel o back-end? (Marcar
+con una x la casilla adecuada).
+
+####Laravel
+
+| Concepto  | Básico  | Medio |Avanzado |
+| :------------ |:---------------:| -----:|-----:|
+| Eventos/listeners      |  | [x] | |
+| Jobs/cron jobs (queues)     |  |  |[x] |
+| Filesystem (Storage)     |  |  |[x] |
+| Validaciones/Policies    |  | [x] | |
+| Testing    | [x] |  | | |
+
+####Backend
+
+| Concepto  | Poca  | Normal |Mucha |
+| :------------ |:---------------:| -----:|-----:|
+| Proyectos grandes      |  |  |[x] |
+| Crear APIs rest/graphql    |  | [x] | |
+| Resolución de bugs     |  |  |[x] |
+
+###Gracias por su tiempo los invito a ver el código

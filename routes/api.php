@@ -14,6 +14,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+//  user url
+
+Route::group(['middleware' => ['auth:api']], function () {
+    //  user url
+    Route::get('users-with-comments', 'UserController@getUsersWithComments');
+    Route::group(['prefix' => 'users'], function () {
+        Route::post('', 'UserController@saveUser');
+        Route::get('', 'UserController@getUsers');
+        Route::put('{id}','UserController@editUser');
+        Route::get('{id}','UserController@getUserById');
+    });
+
 });
+
+Route::get('err', function (Request $request) {
+    return response(['data' => 'Access denied'], 401);
+})->name('err');
