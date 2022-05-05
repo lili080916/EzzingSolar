@@ -3,7 +3,7 @@
 Para un mayor entendimiento de las respuestas a las preguntas dadas en el documento, he desarrollado la API correspondiente, donde cada una de estas respuestas estan implementadas.
 
 - Desarrollado con Laravel 9
-- haciendo uso de Request y Rules para validación
+- Se hizo uso de Request y Rules para la validación
 - Passport para autenticación con token
 - Middleware para permisos de acceso como Cors
 - Resource para la respuestas de datos Json
@@ -85,7 +85,7 @@ palabras, en qué archivo o clase incluirías cada pieza de lógica
 
 > Las validaciones están en los archivos de Request que se crean con el comando:
 `php artisan make:request StoreUserRequest`
-y en el llevamos la validación de los datos de entrada. Mirar desarrollo en: raiz/app/Http/Requests/StoreUserRequest.php
+y en él llevamos la validación de los datos de entrada. Mirar desarrollo en: raiz/app/Http/Requests/StoreUserRequest.php
 
 > Las validaciones personalizadas o Rules, como se denominan en Laravel, se crean con el comando:
 `php artisan make:rule Adult`
@@ -110,7 +110,7 @@ Necesitas que todas las rutas implementen un middleware de autenticación (las
 peticiones futuras que crees en el proyecto también deberán implementarlo). Dados
 estos requisitos, ¿Qué forma conoces para conseguir esto mediante laravel?.
 
-> Se crearon dos **Middleware**: uno para el **Cors** para que pueda ser accesible la api desde cualquier servidor externo y el segundo **auth:api** que permite a las rutas dentro de este grupo verificar que tenga un **access_token** con los permisos requeridos para acceder a los controlladores correspondientes. Estos **Middleware** deben ser insertados en el **Kernel** para que sean ejecutados.
+> Se crearon dos **Middleware**: uno para el **Cors** para que pueda ser accesible la api desde cualquier servidor externo y el segundo **auth:api** que permite a las rutas dentro de este grupo verificar que tenga un **access_token** con los permisos requeridos para acceder a los controladores correspondientes. Estos **Middleware** deben ser insertados en el **Kernel** para que sean ejecutados.
 `php artisan make:middleware Cors`
 
 ```middleware1
@@ -129,7 +129,7 @@ if (! $request->expectsJson()) {
    return route('err');
 };
 ```
-> Rutas: Si no tienes accesos porque las credeciales son incorrectas retorna un status 401 con acceso denegado
+> Rutas: Si no se tiene acceso porque las credenciales son incorrectas retorna un status 401 con acceso denegado
 
 ```routes
 Route::get('err', function (Request $request) {
@@ -168,10 +168,10 @@ function getUsersWithComments()
 }
 ```
 
-> Recarcar que se esta devolviendo la información en formato **JSON** a traves de los **Resource de laravel** comando:
+> Recarcar que se está devolviendo la información en formato **JSON** a traves de los **Resource de laravel** comando:
 `php artisan make:resource UserResource`
 `php artisan make:resource UserCollection`
-Para la implementación de esta funcionaliad que se desea nos apoyamos en las relaciones que estan implementadas en los **models** implementación:
+Para la implementación de esta funcionalidad que se desea me apoyé en las relaciones que estan implementadas en los **models** implementación:
 
 ```respuesta3
 public function getUsersWithComments(Request $request)
