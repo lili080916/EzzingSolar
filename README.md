@@ -38,16 +38,16 @@ En la raíz del proyecto, la carpeta **client http** puede importarse una collec
 
 ####Tablas
 
-| Users                   |
-| ------------- | ------------------------------ |
+| Users        |           |
+| :------------ |:--------------- |
 | `ID`      | Integer       |
 | `name`   | String     |
 | `surname`      | String       |
 | `birthday`   | Date     |
 
 
-| Comments                   |
-| ------------- | ------------------------------ |
+| Comments       |            |
+| :------------ |:--------------- |
 | `ID`      | Integer       |
 | `user_id`   | Integer     |
 | `test`      | String       |
@@ -91,7 +91,7 @@ y en el llevamos la validación de los datos de entrada. Mirar desarrollo en: ra
 `php artisan make:rule Adult`
 y en él llevamos la validación personalizada para si el usuario es mayor de edad. Mirar desarrollo en: raiz/app/Rules/Adult.php
 
-> Entonces la arquitecturas o archivos utilizados son:
+> Entonces la arquitectura o archivos utilizados son:
 **UserController**: Lógica de la función
 **Models**: Es el objeto para interactuar con la capa de datos y se hidrata con la estructura e información de la BD, manejo del objeto, los atributos, relaciones, entre otros.
 **StoreUserRequest**: Request para la validación en la entrada de los datos
