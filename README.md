@@ -8,6 +8,7 @@ Para un mayor entendimiento de las respuestas a las preguntas dadas en el docume
 - Middleware para permisos de acceso como Cors
 - Resource para la respuestas de datos Json
 - Eloquent para interacción con la capa de datos(como se solicita en el formulario)
+- BD en SQlite: ya que es una api pequeña y es adecuado para el desarrollo básico y pruebas.
 
 
 ### PASOS PARA EL DESPLIEGUE DE LA API
